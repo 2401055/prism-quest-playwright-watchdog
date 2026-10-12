@@ -14,6 +14,6 @@ WHIP_URL=https://customer-...cloudflarestream.com/.../webRTC/publish
 
 Do not commit or publish the value. Then open **Actions → Prism Quest Playwright watchdog → Run workflow**.
 
-The workflow also runs every six hours. Each run exits before GitHub's six-hour runner limit and the next scheduled run opens a fresh browser. Cloudflare Stream must have a YouTube output attached to the same Live Input.
+The workflow also runs every five hours. Each run exits after 4 hours 59 minutes, leaving a theoretical one-minute gap before the next scheduled browser. Cloudflare Stream must have a YouTube output attached to the same Live Input.
 
-This free fallback can have a short gap if GitHub delays a scheduled run. It does not require a VPS or Oracle VM. Telegram control is optional and is disabled when `TELEGRAM_BOT_TOKEN` is absent.
+This free fallback can have a longer practical gap if GitHub delays a scheduled run; the one-minute figure is theoretical only. It does not require a VPS or Oracle VM. Telegram control is optional and is disabled when `TELEGRAM_BOT_TOKEN` is absent.

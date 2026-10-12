@@ -3,7 +3,7 @@ name: Prism Quest Playwright watchdog
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */5 * * *'
 
 permissions:
   contents: read
@@ -15,12 +15,12 @@ concurrency:
 jobs:
   broadcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 350
+    timeout-minutes: 359
     env:
       WHIP_URL: ${{ secrets.WHIP_URL }}
       BROADCAST_URL: https://prism-quest-broadcast.pages.dev/broadcast
       HEADLESS: '1'
-      MAX_RUNTIME_MS: '20400000'
+      MAX_RUNTIME_MS: '17940000'
       RESTART_MS: '10000'
     steps:
       - uses: actions/checkout@v4
