@@ -35,7 +35,15 @@ export default {
 
   async fetch(request, env) {
     const url = new URL(request.url)
-    if (request.method === 'GET') return new Response(JSON.stringify({ ok: true, service: 'prism-quest-watchdog-cron' }), { headers: { 'content-type': 'application/json' } })
+    if (request.method === 'GET' && url.pathname === '/setup') {
+      if (!env.TELEGRAM_BOT_TOKEN) return new Response('Add TELEGRAM_BOT_TOKEN to Worker Secrets first.', { status: 503 })
+      const webhook = `${url.origin}/telegram`
+      const body = { url: webhook }
+      if (env.TELEGRAM_WEBHOOK_SECRET) body.secret_token = env.TELEGRAM_WEBHOOK_SECRET
+      const response = await telegram(env, 'setWebhook', body)
+      return new Response(JSON.stringify({ ok: true, webhook, telegram: response }), { headers: { 'content-type': 'application/json' } })
+    }
+    if (request.method === 'GET') return new Response(JSON.stringify({ ok: true, service: 'prism-quest-watchdog-cron', setup: `${url.origin}/setup` }), { headers: { 'content-type': 'application/json' } })
     if (request.method !== 'POST' || url.pathname !== '/telegram') return new Response('Not found', { status: 404 })
     if (env.TELEGRAM_WEBHOOK_SECRET && request.headers.get('X-Telegram-Bot-Api-Secret-Token') !== env.TELEGRAM_WEBHOOK_SECRET) return new Response('Unauthorized', { status: 401 })
     if (!env.TELEGRAM_BOT_TOKEN || !env.GITHUB_DISPATCH_TOKEN) return new Response('Bot is not configured', { status: 503 })
