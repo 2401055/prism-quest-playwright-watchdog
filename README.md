@@ -21,3 +21,22 @@ This free fallback can still have a practical gap if GitHub runner provisioning 
 ## Cloudflare Cron setup
 
 Deploy `wrangler.toml` and `deploy/cloudflare/watchdog-cron.js` as a Worker, then add the Worker secret `GITHUB_DISPATCH_TOKEN`. The token needs permission to dispatch this workflow (`Actions: write` on this repository). The Worker checks GitHub every minute and dispatches only when the current run is near its handoff point or has stopped.
+
+## Telegram control without local code
+
+Add these Worker Secrets:
+
+```text
+GITHUB_DISPATCH_TOKEN   (already required)
+TELEGRAM_BOT_TOKEN      (from BotFather)
+TELEGRAM_CHAT_ID        (optional; restricts control to your chat)
+TELEGRAM_WEBHOOK_SECRET (optional private random text)
+```
+
+Set the Telegram webhook URL to:
+
+```text
+https://prism-quest-watchdog-cron.2401055.workers.dev/telegram
+```
+
+Then send `/start`, `/stop`, `/restart`, or `/status` to the bot. BotFather creates the bot identity; the Cloudflare Worker supplies the behavior.
