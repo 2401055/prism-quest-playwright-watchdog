@@ -20,7 +20,7 @@ jobs:
       WHIP_URL: ${{ secrets.WHIP_URL }}
       BROADCAST_URL: https://prism-quest-broadcast.pages.dev/broadcast
       HEADLESS: '1'
-      MAX_RUNTIME_MS: '17940000'
+      MAX_RUNTIME_MS: '17990000'
       RESTART_MS: '10000'
     steps:
       - uses: actions/checkout@v4
