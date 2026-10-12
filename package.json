@@ -1,0 +1,9 @@
+{
+  "name": "prism-quest-playwright-watchdog",
+  "private": false,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": { "start": "node bot.mjs" },
+  "dependencies": { "playwright": "^1.63.0" },
+  "engines": { "node": ">=22" }
+}

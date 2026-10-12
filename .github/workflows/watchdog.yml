@@ -1,0 +1,33 @@
+name: Prism Quest Playwright watchdog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prism-quest-playwright
+  cancel-in-progress: true
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      WHIP_URL: ${{ secrets.WHIP_URL }}
+      BROADCAST_URL: https://prism-quest-broadcast.pages.dev/broadcast
+      HEADLESS: '1'
+      MAX_RUNTIME_MS: '20400000'
+      RESTART_MS: '10000'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --omit=dev
+      - run: npx playwright install --with-deps chromium
+      - name: Start and monitor broadcast
+        run: node bot.mjs
