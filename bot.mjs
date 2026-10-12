@@ -6,6 +6,7 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const HEADLESS = process.env.HEADLESS !== '0'
 const RESTART_MS = Number(process.env.RESTART_MS || 10000)
+const START_DELAY_MS = Number(process.env.START_DELAY_MS || 0)
 
 if (!WHIP_URL) throw new Error('WHIP_URL is required; never commit it to Git')
 const MAX_RUNTIME_MS = Number(process.env.MAX_RUNTIME_MS || 0)
@@ -109,6 +110,7 @@ async function pollTelegram() {
 process.on('SIGINT', async () => { stopping = true; await closeBrowser(); process.exit(0) })
 process.on('SIGTERM', async () => { stopping = true; await closeBrowser(); process.exit(0) })
 
+if (START_DELAY_MS > 0) await new Promise(resolve => setTimeout(resolve, START_DELAY_MS))
 await startBrowser()
 void pollTelegram()
 if (MAX_RUNTIME_MS > 0) setTimeout(async () => { stopping = true; await closeBrowser(); process.exit(0) }, MAX_RUNTIME_MS)

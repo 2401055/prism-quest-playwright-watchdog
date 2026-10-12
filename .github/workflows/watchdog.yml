@@ -2,13 +2,15 @@ name: Prism Quest Playwright watchdog
 
 on:
   workflow_dispatch:
+    inputs:
+      start_delay_ms:
+        description: 'Delay browser start for a warm handoff'
+        required: false
+        default: '0'
+        type: string
 
 permissions:
   contents: read
-
-concurrency:
-  group: prism-quest-playwright
-  cancel-in-progress: true
 
 jobs:
   broadcast:
@@ -20,6 +22,7 @@ jobs:
       HEADLESS: '1'
       MAX_RUNTIME_MS: '17990000'
       RESTART_MS: '10000'
+      START_DELAY_MS: ${{ inputs.start_delay_ms || '0' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
