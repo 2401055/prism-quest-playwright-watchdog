@@ -1,0 +1,6 @@
+name = "prism-quest-watchdog-cron"
+main = "deploy/cloudflare/watchdog-cron.js"
+compatibility_date = "2026-10-13"
+
+[triggers]
+crons = ["0 */5 * * *"]
