@@ -50,7 +50,7 @@ async function startBrowser() {
   stopping = false
   browser = await chromium.launch({
     headless: HEADLESS,
-    args: ['--disable-dev-shm-usage', '--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--disable-gpu'],
+    args: ['--disable-dev-shm-usage', '--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--use-angle=swiftshader'],
   })
   page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 })
   page.on('console', message => console.log(`[page:${message.type()}] ${message.text()}`))
