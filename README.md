@@ -6,13 +6,7 @@ The private game source is not included. Secrets are supplied through GitHub Act
 
 ## Setup
 
-Add this repository secret:
-
-```text
-WHIP_URL=https://customer-...cloudflarestream.com/.../webRTC/publish
-```
-
-Do not commit or publish the value. Then open **Actions → Prism Quest Playwright watchdog → Run workflow**.
+The GitHub workflow uses the public Cloudflare WHIP proxy. The real WHIP URL is stored only as the `WHIP_URL` secret inside the Cloudflare Worker, so no WHIP secret is needed in GitHub. Then open **Actions → Prism Quest Playwright watchdog → Run workflow**.
 
 The companion Cloudflare Worker Cron checks GitHub every minute. When the active Runner approaches 4 hours 50 minutes, it dispatches and pre-warms the next Runner while the current browser is still streaming. The next browser receives a calculated handoff delay, so the theoretical gap is near zero instead of waiting for a new Runner after the stream stops. Cloudflare Stream must have a YouTube output attached to the same Live Input.
 

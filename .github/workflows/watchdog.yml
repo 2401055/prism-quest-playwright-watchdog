@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 359
     env:
-      WHIP_URL: ${{ secrets.WHIP_URL }}
+      WHIP_URL: https://prism-quest-watchdog-cron.2401055.workers.dev/whip
       BROADCAST_URL: https://prism-quest-broadcast.pages.dev/broadcast
       HEADLESS: '1'
       MAX_RUNTIME_MS: '17990000'
