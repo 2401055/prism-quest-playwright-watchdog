@@ -30,5 +30,10 @@ jobs:
           node-version: 22
       - run: npm install --omit=dev
       - run: npx playwright install --with-deps chromium
+      - name: Validate WHIP endpoint
+        run: |
+          code=$(curl -sS -o /tmp/whip-check.txt -w '%{http_code}' -X POST -H 'Content-Type: application/sdp' --data-binary '' "$WHIP_URL")
+          echo "WHIP endpoint HTTP status: $code"
+          test "$code" = "400"
       - name: Start and monitor broadcast
         run: node bot.mjs
