@@ -35,6 +35,15 @@ export default {
 
   async fetch(request, env) {
     const url = new URL(request.url)
+    if (request.method === 'OPTIONS' && url.pathname === '/whip') return new Response(null, { headers: { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'POST,OPTIONS', 'access-control-allow-headers': 'Content-Type' } })
+    if (request.method === 'POST' && url.pathname === '/whip') {
+      if (!env.WHIP_URL) return new Response('WHIP proxy is not configured', { status: 503 })
+      const upstream = await fetch(env.WHIP_URL, { method: 'POST', headers: { 'Content-Type': 'application/sdp' }, body: await request.arrayBuffer() })
+      const headers = new Headers(upstream.headers)
+      headers.set('access-control-allow-origin', '*')
+      headers.set('access-control-expose-headers', 'Location')
+      return new Response(upstream.body, { status: upstream.status, headers })
+    }
     if (request.method === 'GET' && url.pathname === '/setup') {
       if (!env.TELEGRAM_BOT_TOKEN) return new Response('Add TELEGRAM_BOT_TOKEN to Worker Secrets first.', { status: 503 })
       const webhook = `${url.origin}/telegram`
