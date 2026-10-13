@@ -53,11 +53,12 @@ async function startBrowser() {
     args: ['--disable-dev-shm-usage', '--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--disable-gpu'],
   })
   page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 })
+  page.on('console', message => console.log(`[page:${message.type()}] ${message.text()}`))
   page.on('close', () => { running = false })
   await page.goto(BROADCAST_URL, { waitUntil: 'domcontentloaded', timeout: 60000 })
   await page.locator('#whip').fill(WHIP_URL)
   await page.locator('#start').click()
-  await page.waitForFunction(() => document.querySelector('#status')?.textContent?.includes('Connected'), null, { timeout: 30000 }).catch(() => undefined)
+  await page.waitForFunction(() => document.querySelector('#status')?.textContent?.includes('Connected to Cloudflare'), null, { timeout: 45000 })
   running = true
   const status = await page.locator('#status').textContent()
   await notify(`Prism Quest broadcast: ${status || 'started'}`)
